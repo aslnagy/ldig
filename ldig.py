@@ -6,7 +6,7 @@
 # (c)2011 Nakatani Shuyo / Cybozu Labs Inc.
 # https://github.com/shuyo/ldig
 # Modified by Nikolaj Hass 06-06-2015
-# Updated to work with python3 
+# Updated to work with python 3 and only take a text string instead of a file
 
 import os, sys, re, codecs, json
 import optparse
