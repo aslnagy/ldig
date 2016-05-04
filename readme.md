@@ -5,6 +5,7 @@ ldig (Language Detection with Infinity Gram)
 This is a prototype of language detection for short message service (twitter).
 with 99.1% accuracy for 17 languages
 
+Now you can install this tool via pip, but it's only works with python 3 though.
 
 Usage
 ------
