@@ -19,7 +19,6 @@ import io
 import sys
 
 
-
 class ldig(object):
     def __init__(self, model_dir):
         self.features = os.path.join(model_dir, 'features')
@@ -164,12 +163,13 @@ class ldig(object):
         print("finish... " + time.strftime("%H:%M:%S", time.localtime()))
         numpy.save(self.param, param)
 
-    def detect(self, options, args):
-        trie = self.load_da()
-        param = numpy.load(self.param)
-        labels = self.load_labels()
+    def load(self):
+        self.trie = self.load_da()
+        self.param = numpy.load(self.param)
+        self.labels = self.load_labels()
 
-        log_likely = likelihood(param, labels, trie, args, options)
+    def detect(self, options, args):
+        log_likely = likelihood(self.param, self.labels, self.trie, args, options)
         return log_likely
         #sys.stdout.buffer.write(log_likely)#print(log_likely)
 
@@ -193,11 +193,14 @@ def htmlentity2unicode(text):
         name = match.group(1)
 
         if name in htmlentitydefs.name2codepoint.keys():
-            result += unichr(htmlentitydefs.name2codepoint[name])
+            result += chr(htmlentitydefs.name2codepoint[name])
+            # result += unichr(htmlentitydefs.name2codepoint[name])
         elif num16_regex.match(name):
-            result += unichr(int(u'0' + name[1:], 16))
+            result += chr(int(u'0' + name[1:], 16))
+            # result += unichr(int(u'0' + name[1:], 16))
         elif num10_regex.match(name):
-            result += unichr(int(name[1:]))
+            result += chr(int(name[1:]))
+            # result += unichr(int(name[1:]))
     return result
 
 
@@ -379,13 +382,13 @@ def inference(param, labels, corpus, idlist, trie, options):
             indexes = events
             if (N - m) % WHOLE_REG_INT == 1:
                 print("full regularization: %d / %d" % (m, N))
-                indexes = xrange(M)
+                indexes = range(M)
             for id in indexes:
                 prm = param[id]
                 pnl = penalties[id]
                 if id in events: prm -= y * events[id]
 
-                for j in xrange(K):
+                for j in range(K):
                     w = prm[j]
                     if w > 0:
                         w1 = w - uk - pnl[j]

@@ -25,9 +25,9 @@ class TestDoubleArray(unittest.TestCase):
     def test3(self):
         trie = da.DoubleArray(verbose=False)
         trie.initialize(["ca", "cat", "deer", "dog", "fox", "rat"])
-        print trie.base
-        print trie.check
-        print trie.value
+        print(trie.base)
+        print(trie.check)
+        print(trie.value)
         self.assertEqual(trie.N, 17)
         self.assert_(trie.get("c") is None)
         self.assertEqual(trie.get("ca"), 0)

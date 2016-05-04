@@ -1,0 +1,4 @@
+# Pycharm related files
+.DS_Store
+.idea
+module core

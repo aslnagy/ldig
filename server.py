@@ -6,8 +6,10 @@
 # (c)2011 Nakatani Shuyo / Cybozu Labs Inc.
 
 import sys, os, codecs
-import BaseHTTPServer
-import urlparse
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlparse
+# import BaseHTTPServer
+# import urlparse
 import optparse
 import json
 import numpy
@@ -47,7 +49,7 @@ class Detector(object):
 basedir = os.path.join(os.path.dirname(__file__), "static")
 detector = Detector(options.model)
 
-class LdigServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class LdigServerHandler(HTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
         url = urlparse.urlparse(self.path)
         path = url.path
@@ -55,7 +57,7 @@ class LdigServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         localpath = basedir + path
         if path == "/detect":
             params = urlparse.parse_qs(url.query)
-            text = unicode(params['text'][0], 'utf-8')
+            text = chr(params['text'][0], 'utf-8')
             json.dump(detector.detect(text), self.wfile)
         elif os.path.exists(localpath):
             self.send_response(200)
@@ -71,6 +73,6 @@ class LdigServerHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_header("Expires", "Fri, 31 Dec 2100 00:00:00 GMT")
             self.end_headers()
 
-server = BaseHTTPServer.HTTPServer(('', options.port), LdigServerHandler)
-print "ready."
+server = HTTPServer(('', options.port), LdigServerHandler)
+print("ready.")
 server.serve_forever()
