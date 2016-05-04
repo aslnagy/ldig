@@ -1,8 +1,9 @@
-from distutils.core import setup
+# from distutils.core import setup
+from setuptools import setup
 
 setup(name='ldig',
       author='',
       author_email='',
       version='1.0',
-      requires=['numpy'],
+      install_requires=['numpy'],
       packages=[''])
